@@ -1,0 +1,4 @@
+interface:
+  display_name: "FreeRouter"
+  short_description: "安装、配置和维护 FreeRouter 免费模型网关"
+  default_prompt: "Use $freerouter to install, configure, or troubleshoot my local FreeRouter gateway."

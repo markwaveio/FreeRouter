@@ -1,0 +1,39 @@
+[project]
+name = "freerouter"
+version = "0.1.0"
+description = "A zero-price model router built on the LiteLLM proxy"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.11,<3",
+  "PyYAML>=6.0,<7",
+  "typing-extensions>=4.14,<5",
+]
+
+[dependency-groups]
+dev = [
+  "basedpyright>=1.31",
+  "pytest>=8.4",
+  "ruff>=0.12",
+]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.basedpyright]
+typeCheckingMode = "all"
+pythonVersion = "3.11"
+include = ["freerouter_config.py", "tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["COM812", "CPY001", "D100", "D101", "D103", "D105"]
+
+[tool.ruff.lint.per-file-ignores]
+"freerouter_config.py" = ["S606"]
+"tests/**" = ["D", "S101"]
