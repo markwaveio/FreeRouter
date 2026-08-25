@@ -1,0 +1,31 @@
+id: cohere
+name: Cohere
+name_zh: Cohere
+status: active
+tier: free
+region: global
+credential: COHERE_API_KEY
+litellm_prefix: cohere_chat
+docs_url: https://docs.cohere.com/docs/rate-limits
+console_url: https://dashboard.cohere.com/api-keys
+summary: Command 系列（仅限非商业用途）
+free_basis: Trial Key 免费调用 Command 系列，仅限非商业用途
+free_basis_checked: 2026-08-25
+max_models: 10
+limits:
+  rpm: 20
+  rpd: 33
+  note: 官方限额是约 1000 次/月，这里折算成每天约 33 次填进 rpd，便于探测预算体检
+discovery:
+  mode: listing
+  url: https://api.cohere.com/v1/models?endpoint=chat&page_size=200
+  auth: bearer
+  items_path: models
+  whole_catalog_is_free: true
+  id_path: name
+  deny:
+    - "*embed*"
+    - "*rerank*"
+probe:
+  # 月额度平台：4 次/天，占折算日额度的 12%
+  max_per_cycle: 1

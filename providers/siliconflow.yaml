@@ -1,0 +1,42 @@
+id: siliconflow
+name: SiliconFlow
+name_zh: 硅基流动 SiliconFlow
+status: active
+tier: free
+region: cn
+credential: SILICONFLOW_API_KEY
+litellm_prefix: openai
+api_base: https://api.siliconflow.cn/v1
+docs_url: https://docs.siliconflow.cn/cn/userguide/quickstart
+console_url: https://cloud.siliconflow.cn/account/ak
+# 想挂自己的邀请链接就取消下面两行的注释，两行必须同时填（缺 referral_note 会加载失败）
+referral_url: https://cloud.siliconflow.cn/i/CuI9M5Ht
+referral_note: 双方各得 2000 万 tokens（约 ¥14 平台额度，不可提现）
+summary: Qwen3-8B、GLM-4-9B 等 9B 以下开源模型永久免费
+free_basis: 官方公布 9B 及以下开源模型永久免费；Pro/ 前缀为付费版本，已由 deny 排除
+free_basis_checked: 2026-08-25
+max_models: 15
+limits:
+  note: 免费模型有 RPM/TPM 限制，具体见控制台
+discovery:
+  mode: listing
+  url: https://api.siliconflow.cn/v1/models?sub_type=chat
+  auth: bearer
+  items_path: data
+  id_path: id
+  allow:
+    - "qwen/qwen3-8b"
+    - "qwen/qwen2.5-7b-instruct"
+    - "qwen/qwen2.5-coder-7b-instruct"
+    - "qwen/qwen2-7b-instruct"
+    - "thudm/glm-4-9b-*"
+    - "thudm/chatglm3-6b"
+    - "internlm/internlm2_5-7b-chat"
+    - "deepseek-ai/deepseek-r1-distill-qwen-7b"
+    - "google/gemma-2-9b-it"
+    - "meta-llama/meta-llama-3.1-8b-instruct"
+    - "01-ai/yi-1.5-9b-chat-16k"
+  deny:
+    - "pro/*"
+probe:
+  max_per_cycle: 5

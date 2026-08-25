@@ -1,0 +1,24 @@
+id: stepfun
+name: StepFun
+name_zh: 阶跃星辰 StepFun
+status: active
+tier: trial
+region: cn
+credential: STEPFUN_API_KEY
+litellm_prefix: openai
+api_base: https://api.stepfun.com/v1
+docs_url: https://platform.stepfun.com/docs/overview/concept
+console_url: https://platform.stepfun.com/interface-key
+summary: 阶跃 Step-1 / Step-2 系列
+free_basis: 注册赠送体验代金券（约 30 天有效）；额度用尽后探测会自动隔离
+free_basis_checked: 2026-08-25
+max_models: 6
+limits:
+  note: 体验额度有效期较短
+discovery:
+  mode: static
+  models:
+    - step-1-8k
+    - step-2-mini
+probe:
+  max_per_cycle: 2

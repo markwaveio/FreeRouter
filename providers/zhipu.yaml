@@ -1,0 +1,32 @@
+id: zhipu
+name: Zhipu BigModel
+name_zh: 智谱 AI (BigModel)
+status: active
+tier: free
+region: cn
+credential: ZHIPU_API_KEY
+litellm_prefix: openai
+api_base: https://open.bigmodel.cn/api/paas/v4
+docs_url: https://docs.bigmodel.cn/cn/guide/start/model-overview
+console_url: https://bigmodel.cn/usercenter/apikeys
+referral_url: https://www.bigmodel.cn/invite?icode=bkHx%2Fep6dDks7UF3yJZB4LC%2Fk7jQAKmT1mpEiZXXnFw%3D
+referral_note: 好友实名注册后双方各得 Tokens 资源包，无需充值
+summary: GLM-4.7-Flash 等 Flash 系列长期免费
+free_basis: 官网标注为「免费模型」的 Flash 系列，长期免费；带 flashx 的为付费高速档，已由 deny 排除
+free_basis_checked: 2026-08-25
+max_models: 10
+limits:
+  note: 免费模型并发较低（部分为 1 并发），需要手机号注册
+discovery:
+  mode: static
+  models:
+    - glm-4.7-flash
+    - glm-4.5-flash
+    - glm-4-flash-250414
+    - glm-4-flash
+    - glm-4v-flash
+    - glm-z1-flash
+  deny:
+    - "*flashx*"
+probe:
+  max_per_cycle: 6

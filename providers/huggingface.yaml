@@ -1,0 +1,21 @@
+id: huggingface
+name: Hugging Face Inference
+name_zh: Hugging Face 推理
+status: paused
+tier: trial
+region: global
+credential: HUGGINGFACE_API_KEY
+litellm_prefix: huggingface
+docs_url: https://huggingface.co/docs/inference-providers/en/pricing
+console_url: https://huggingface.co/settings/tokens
+summary: 数千开源模型（需按 provider 段指定）
+free_basis: 每月少量免费额度；Inference Providers 的模型标识需要带上具体的 provider 段（例如 together/…），无法用统一规则自动发现
+free_basis_checked: 2026-08-25
+max_models: 5
+limits:
+  note: 每月约 0.10 美元额度，超出后按量计费
+discovery:
+  mode: static
+  models: []
+probe:
+  enabled: false

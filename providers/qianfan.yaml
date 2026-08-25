@@ -1,0 +1,28 @@
+id: qianfan
+name: Baidu Qianfan
+name_zh: 百度千帆
+status: active
+tier: free
+region: cn
+credential: QIANFAN_API_KEY
+litellm_prefix: openai
+api_base: https://qianfan.baidubce.com/v2
+docs_url: https://cloud.baidu.com/doc/qianfan-api/index.html
+console_url: https://console.bce.baidu.com/iam/#/iam/apikey/list
+summary: ERNIE Speed / Lite / Tiny 永久免费不限量
+free_basis: ERNIE 轻量系列（Speed / Lite / Tiny）官方标注永久免费不限量
+free_basis_checked: 2026-08-25
+max_models: 10
+limits:
+  note: 有 QPS 限制，需要完成实名认证
+discovery:
+  mode: static
+  models:
+    - ernie-speed-8k
+    - ernie-speed-128k
+    - ernie-speed-pro-128k
+    - ernie-lite-8k
+    - ernie-lite-pro-128k
+    - ernie-tiny-8k
+probe:
+  max_per_cycle: 6

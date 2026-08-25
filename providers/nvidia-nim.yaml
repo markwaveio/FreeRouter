@@ -1,0 +1,45 @@
+id: nvidia-nim
+name: NVIDIA NIM
+name_zh: NVIDIA NIM
+status: active
+tier: free
+region: global
+credential: NVIDIA_NIM_API_KEY
+litellm_prefix: nvidia_nim
+docs_url: https://build.nvidia.com/models
+console_url: https://build.nvidia.com/settings/api-keys
+summary: Llama、Gemma、Mistral 等 100+ 开源模型
+free_basis: 开发者计划体验额度，模型目录公开可查；allow/deny 规则只保留对话类模型
+free_basis_checked: 2026-08-25
+max_models: 25
+limits:
+  rpm: 40
+  note: 需要邮箱注册并完成手机验证
+discovery:
+  mode: listing
+  url: https://integrate.api.nvidia.com/v1/models
+  auth: none
+  items_path: data
+  id_path: id
+  allow:
+    - "*instruct*"
+    - "*-it"
+    - "*chat*"
+  deny:
+    - "*embed*"
+    - "*rerank*"
+    - "*bge*"
+    - "*guard*"
+    - "*safety*"
+    - "*reward*"
+    - "*ocr*"
+    - "*-vl*"
+    - "*vision*"
+    - "*diffusion*"
+    - "*image*"
+    - "*asr*"
+    - "*tts*"
+    - "*riva*"
+    - "*paddle*"
+probe:
+  max_per_cycle: 6

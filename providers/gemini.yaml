@@ -1,0 +1,40 @@
+id: gemini
+name: Google AI Studio
+name_zh: Google AI Studio (Gemini)
+status: active
+tier: free
+region: global
+credential: GEMINI_API_KEY
+litellm_prefix: gemini
+docs_url: https://ai.google.dev/gemini-api/docs/rate-limits
+console_url: https://aistudio.google.com/apikey
+summary: Gemini Flash 与 Gemma 系列
+free_basis: Flash 与 Gemma 系列在免费层开放；Pro 与预览模型不稳定，由 deny 规则排除
+free_basis_checked: 2026-08-25
+max_models: 12
+limits:
+  rpm: 15
+  rpd: 1500
+  note: 各模型限额不同；欧盟、英国、瑞士可能没有免费层，且免费层数据可能用于训练
+discovery:
+  mode: listing
+  url: https://generativelanguage.googleapis.com/v1beta/models
+  auth: query_key
+  items_path: models
+  id_path: name
+  id_strip_prefix: "models/"
+  allow:
+    - "*flash*"
+    - "gemma-*"
+  deny:
+    - "*embedding*"
+    - "*image*"
+    - "*tts*"
+    - "*live*"
+    - "*native-audio*"
+    - "*-exp*"
+    - "*preview*"
+    - "*learnlm*"
+    - "*aqa*"
+probe:
+  max_per_cycle: 5

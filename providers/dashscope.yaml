@@ -1,0 +1,24 @@
+id: dashscope
+name: Alibaba DashScope
+name_zh: 阿里云百炼 (DashScope)
+status: active
+tier: trial
+region: cn
+credential: DASHSCOPE_API_KEY
+litellm_prefix: dashscope
+docs_url: https://help.aliyun.com/zh/model-studio/models
+console_url: https://bailian.console.aliyun.com/?tab=model#/api-key
+summary: 通义千问 Qwen-Turbo / Plus / Flash
+free_basis: 新用户各模型独立赠送百万级 Token，通常 90 天有效；额度用尽后探测会自动隔离
+free_basis_checked: 2026-08-25
+max_models: 10
+limits:
+  note: 需要实名认证；赠送额度到期后模型会被探测判定为 exhausted
+discovery:
+  mode: static
+  models:
+    - qwen-turbo
+    - qwen-plus
+    - qwen-flash
+probe:
+  max_per_cycle: 4

@@ -1,0 +1,56 @@
+id: modelscope
+name: ModelScope
+name_zh: 魔搭社区 ModelScope
+status: active
+tier: free
+region: cn
+credential: MODELSCOPE_API_KEY
+litellm_prefix: modelscope
+docs_url: https://modelscope.cn/docs/model-service/API-Inference/intro
+console_url: https://modelscope.cn/my/myaccesstoken
+referral_url: https://modelscope.cn/register?inviteCode=MarkWave&invitorName=MarkWave
+referral_note: 双方各得魔方（ModelScope 平台积分），注册即得无需充值
+summary: Qwen3、DeepSeek、GLM 等 25 个开源模型免费推理
+free_basis: 注册用户免费推理额度，模型目录公开可查；deny 规则排除非对话模态
+free_basis_checked: 2026-08-25
+max_models: 25
+# ModelScope 上部分模型在非流式调用下会返回 choices: null，必须显式关闭思考模式；
+# 但思考专用变体（-Thinking 后缀等）会拒绝 enable_thinking=false，报
+# InternalError.Algo.InvalidParameter，所以只能按模型给。名单是 2026-08-25 实测的，
+# 命名上没有规律：Qwen3-8B/14B/30B-A3B 需要，Qwen3-235B-A22B 反而不需要。
+# 这些参数对探测和真实流量同时生效。
+extra_params_overrides:
+  - match:
+      - "qwen/qwen3-8b"
+      - "qwen/qwen3-14b"
+      - "qwen/qwen3-30b-a3b"
+      - "paddlepaddle/ernie-4.5-*-pt"
+      - "shanghai_ai_laboratory/intern-s1"
+      - "shanghai_ai_laboratory/intern-s1-mini"
+      - "medaibase/antangelmed"
+    params:
+      enable_thinking: false
+limits:
+  rpd: 2000
+  note: 单模型约 500 次/日。**必须先绑定阿里云账号**，否则所有调用返回 401；绑定入口 https://modelscope.cn/my/settings/account
+discovery:
+  mode: listing
+  url: https://api-inference.modelscope.cn/v1/models
+  auth: none
+  items_path: data
+  whole_catalog_is_free: true
+  id_path: id
+  deny:
+    - "*-vl-*"
+    - "*-vl"
+    - "*image*"
+    - "*video*"
+    - "*audio*"
+    - "*omni*"
+    - "*embedding*"
+    - "*rerank*"
+    - "*ocr*"
+    - "*internvl*"
+    - "*-edit"
+probe:
+  max_per_cycle: 6

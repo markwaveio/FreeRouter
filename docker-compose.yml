@@ -25,15 +25,10 @@ services:
       - .env
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-litellm}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-litellm}
-      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
-      ZENMUX_API_KEY: ${ZENMUX_API_KEY:-}
+      STORE_MODEL_IN_DB: "True"
     volumes:
       - ./config:/app/config:ro
-      - ./freerouter_config.py:/app/freerouter_config.py:ro
-    tmpfs:
-      - /app/runtime
-    entrypoint: ["python", "/app/freerouter_config.py"]
-    command: []
+    command: ["--config", "/app/config/litellm-config.yaml", "--port", "4000"]
     depends_on:
       db:
         condition: service_healthy
@@ -45,6 +40,28 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+  refresher:
+    image: ${LITELLM_IMAGE:-docker.litellm.ai/berriai/litellm-database:latest}
+    container_name: freerouter-refresher
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      PYTHONPATH: /app
+      PYTHONUNBUFFERED: "1"
+      FREEROUTER_GATEWAY_URL: http://litellm:4000
+      FREEROUTER_PROVIDERS_DIR: /app/providers
+      FREEROUTER_STATE_DIR: /app/state
+    volumes:
+      - ./freerouter:/app/freerouter:ro
+      - ./providers:/app/providers:ro
+      - ./state:/app/state
+    entrypoint: ["python", "-m", "freerouter"]
+    command: ["daemon"]
+    depends_on:
+      litellm:
+        condition: service_healthy
 
 volumes:
   freerouter_postgres_data:

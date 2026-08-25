@@ -1,0 +1,29 @@
+id: cerebras
+name: Cerebras
+name_zh: Cerebras
+status: active
+tier: free
+region: global
+credential: CEREBRAS_API_KEY
+litellm_prefix: cerebras
+docs_url: https://inference-docs.cerebras.ai/introduction
+console_url: https://cloud.cerebras.ai/platform/apikeys
+summary: Llama、Qwen 等高速推理
+free_basis: 免费层按速率限制开放账号可见的全部推理模型；目录只返回该账号有权限的模型，无权限的会在探测时被 402 拦下，不会进池
+free_basis_checked: 2026-08-25
+max_models: 15
+limits:
+  rpm: 30
+  note: 每日约 100 万 Token。若探测返回 402 Payment required，说明该账号未开通免费层，去 https://cloud.cerebras.ai 的 billing 页确认套餐
+discovery:
+  mode: listing
+  url: https://api.cerebras.ai/v1/models
+  auth: bearer
+  items_path: data
+  whole_catalog_is_free: true
+  id_path: id
+  deny:
+    - "*whisper*"
+    - "*embed*"
+probe:
+  max_per_cycle: 5

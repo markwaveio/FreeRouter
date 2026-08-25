@@ -1,0 +1,46 @@
+id: b-ai
+name: B.AI
+name_zh: B.AI
+status: active
+tier: offer
+region: global
+credential: B_AI_API_KEY
+litellm_prefix: openai
+api_base: https://api.b.ai/v1
+docs_url: https://docs.b.ai
+console_url: https://b.ai
+
+referral_url: https://chat.b.ai/chat?invite_code=H82845
+referral_note: 被邀请人注册可领 30 万积分（官方仅公布受邀方奖励，邀请方奖励未说明）
+summary: DeepSeek-V4-Flash 系列限时 0 Credits 不限量
+free_basis: 官方活动仅 DeepSeek-V4-Flash 系列 0 Credits 不限量。B.AI 是聚合转售平台，同一 /models 目录里还有 GPT、Claude、Gemini 等付费模型，因此只按 allow 白名单接入，绝不整目录信任
+free_basis_checked: 2026-08-25
+max_models: 10
+limits:
+  note: 需要在账户中保留少量 Credits 用于身份校验；活动随时可能调整
+offer:
+  starts_on: 2026-08-17
+  note: DeepSeek-V4-Flash（含 Vision 实验版）0 Credits 不限量
+discovery:
+  mode: listing
+  url: https://api.b.ai/v1/models
+  auth: bearer
+  items_path: data
+  id_path: id
+  allow:
+    - "deepseek-v4-flash"
+    - "deepseek-v4-flash-vision-exp"
+  deny:
+    - "gpt-*"
+    - "claude-*"
+    - "gemini-*"
+    - "qwen*"
+    - "glm-*"
+    - "kimi-*"
+    - "minimax-*"
+    - "mimo-*"
+    - "hy*"
+    - "*embed*"
+    - "*rerank*"
+probe:
+  max_per_cycle: 4

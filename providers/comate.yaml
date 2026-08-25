@@ -1,0 +1,19 @@
+id: comate
+name: Baidu Comate
+name_zh: 百度文心快码 Comate
+status: watch
+tier: offer
+region: cn
+litellm_prefix: openai
+docs_url: https://comate.baidu.com/
+summary: 文心快码不限量 Token（仅 IDE 插件内可用）
+free_basis: 测试版活动提供不限量 Token，但只在 Comate Auto 邀测版客户端内可用，没有公开的 OpenAI 兼容 API，因此只跟踪活动到期、不接入路由
+free_basis_checked: 2026-08-25
+offer:
+  ends_on: 2026-09-24
+  note: 注册得 7 天，邀请好友最高约 37 天；正式版不参与
+discovery:
+  mode: static
+  models: []
+probe:
+  enabled: false

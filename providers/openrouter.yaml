@@ -1,0 +1,50 @@
+id: openrouter
+name: OpenRouter
+name_zh: OpenRouter
+status: active
+tier: free
+region: global
+credential: OPENROUTER_API_KEY
+litellm_prefix: openrouter
+docs_url: https://openrouter.ai/docs
+console_url: https://openrouter.ai/settings/keys
+# 邀请计划：只有内部推荐，且要被邀请人累计消费 $10 以上双方才各得 $5 credits，
+# 没有公开的 affiliate 计划。跟本项目「用免费模型」的定位不符，建议不挂。
+# 真要挂就在 openrouter.ai 账户里拿链接，并在 note 里写明 $10 门槛。
+summary: 20+ 个 :free 后缀模型，DeepSeek/Gemma/Nemotron 等
+free_basis: 目录返回的 pricing.prompt 与 pricing.completion 同时为 0，且输出模态只有 text（排除按秒计费的音视频生成模型）
+free_basis_checked: 2026-08-25
+max_models: 25
+limits:
+  rpm: 20
+  rpd: 50
+  note: 累计充值满 10 美元后约升至 1000 RPD
+discovery:
+  mode: priced_catalog
+  url: https://openrouter.ai/api/v1/models
+  auth: none
+  items_path: data
+  id_path: id
+  prompt_price_path: pricing.prompt
+  completion_price_path: pricing.completion
+  input_modalities_path: architecture.input_modalities
+  output_modalities_path: architecture.output_modalities
+  require_text_io: true
+  deny_output_modalities:
+    - audio
+    - image
+    - video
+  deny:
+    - "*-exp:free"
+    - "*-exp-*:free"
+    - "openrouter/auto"
+    - "*:online"
+    - "*content-safety*"
+    - "*guard*"
+    - "*-moderation*"
+  extra_models:
+    - openrouter/free
+probe:
+  # 免费层只有 50 次/天，默认 6 小时一轮即每天 4 轮。
+  # 2 × 4 = 8 次/天，占日额度 16%，剩下的留给真实调用。
+  max_per_cycle: 2

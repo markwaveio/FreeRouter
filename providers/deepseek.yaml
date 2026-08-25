@@ -1,0 +1,23 @@
+id: deepseek
+name: DeepSeek
+name_zh: DeepSeek 开放平台
+status: active
+tier: trial
+region: cn
+credential: DEEPSEEK_API_KEY
+litellm_prefix: deepseek
+docs_url: https://api-docs.deepseek.com/zh-cn/
+console_url: https://platform.deepseek.com/api_keys
+summary: DeepSeek-V3 与 R1 推理模型
+free_basis: 新用户注册赠送体验额度；额度用尽后探测会自动隔离该平台
+free_basis_checked: 2026-08-25
+max_models: 5
+limits:
+  note: 赠送额度通常在注册后 30 天内有效
+discovery:
+  mode: static
+  models:
+    - deepseek-chat
+    - deepseek-reasoner
+probe:
+  max_per_cycle: 2
