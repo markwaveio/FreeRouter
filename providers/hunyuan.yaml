@@ -1,0 +1,24 @@
+id: hunyuan
+name: Tencent Hunyuan
+name_zh: 腾讯混元
+status: active
+tier: trial
+region: cn
+credential: HUNYUAN_API_KEY
+litellm_prefix: openai
+api_base: https://api.hunyuan.cloud.tencent.com/v1
+docs_url: https://cloud.tencent.com/document/product/1729
+console_url: https://console.cloud.tencent.com/hunyuan/api-key
+summary: 腾讯混元 Lite / Turbo
+free_basis: Lite 系列曾长期免费，其余模型按新用户赠送额度计费；实际可用性以探测结果为准
+free_basis_checked: 2026-08-25
+max_models: 6
+limits:
+  note: 需要开通混元大模型服务
+discovery:
+  mode: static
+  models:
+    - hunyuan-lite
+    - hunyuan-turbos-latest
+probe:
+  max_per_cycle: 3

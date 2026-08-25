@@ -1,0 +1,24 @@
+id: sparkdesk
+name: iFlytek Spark
+name_zh: 讯飞星火
+status: active
+tier: trial
+region: cn
+credential: SPARK_API_KEY
+litellm_prefix: openai
+api_base: https://spark-api-open.xf-yun.com/v1
+docs_url: https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html
+console_url: https://console.xfyun.cn/services/cbm
+summary: 讯飞星火 Lite 与 V3.5
+free_basis: Lite 版本长期免费，其余版本按新用户赠送 Token 包；星辰 MaaS 的限时活动窗口很短
+free_basis_checked: 2026-08-25
+max_models: 5
+limits:
+  note: API Key 使用「APIPassword」形式，需要在控制台开通对应服务
+discovery:
+  mode: static
+  models:
+    - lite
+    - generalv3.5
+probe:
+  max_per_cycle: 2

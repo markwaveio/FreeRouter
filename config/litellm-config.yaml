@@ -1,7 +1,14 @@
+# FreeRouter 只用这个文件承载「你自己添加的模型」。
+# free-router / <平台>-free / fr/<平台>/<模型> 三类别名由 refresher 写进 LiteLLM 数据库，
+# 每轮刷新自动增删，不需要也不应该写在这里。
 model_list: []
 
 general_settings:
   master_key: os.environ/LITELLM_MASTER_KEY
+  store_model_in_db: true
 
 router_settings:
   routing_strategy: simple-shuffle
+  allowed_fails: 2
+  cooldown_time: 60
+  num_retries: 3

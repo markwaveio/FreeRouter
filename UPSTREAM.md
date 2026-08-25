@@ -15,7 +15,7 @@ Run:
 make update
 ```
 
-This pulls the image named by `LITELLM_IMAGE`, recreates the gateway container, and refreshes the provider model catalogs. Database data stays in the Docker volume.
+This pulls the image named by `LITELLM_IMAGE` and recreates the gateway container. Database data stays in the Docker volume, so the free-model pool, virtual keys and spend history survive. The `freerouter-refresher` container reconciles the pool on its next cycle; `make refresh` forces one immediately.
 
 To pin a known LiteLLM version, change `LITELLM_IMAGE` in `.env`. To return to current upstream releases, restore the default image shown above and run `make update`.
 

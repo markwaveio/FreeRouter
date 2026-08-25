@@ -1,0 +1,24 @@
+id: moonshot
+name: Moonshot AI
+name_zh: 月之暗面 Kimi
+status: active
+tier: trial
+region: cn
+credential: MOONSHOT_API_KEY
+litellm_prefix: moonshot
+docs_url: https://platform.moonshot.cn/docs/intro
+console_url: https://platform.moonshot.cn/console/api-keys
+summary: Kimi 长文本模型
+free_basis: 新用户注册赠送体验额度；额度用尽后探测会自动隔离
+free_basis_checked: 2026-08-25
+max_models: 6
+limits:
+  note: 速率与并发按账户等级浮动
+discovery:
+  mode: static
+  models:
+    - moonshot-v1-8k
+    - moonshot-v1-32k
+    - kimi-latest
+probe:
+  max_per_cycle: 3

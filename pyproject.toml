@@ -1,6 +1,6 @@
 [project]
 name = "freerouter"
-version = "0.1.0"
+version = "0.2.0"
 description = "A zero-price model router built on the LiteLLM proxy"
 requires-python = ">=3.11"
 dependencies = [
@@ -24,7 +24,21 @@ testpaths = ["tests"]
 [tool.basedpyright]
 typeCheckingMode = "all"
 pythonVersion = "3.11"
-include = ["freerouter_config.py", "tests"]
+include = ["freerouter", "tests"]
+
+# Tests build models from literal dicts and stub collaborators, so the strictest
+# dynamic-typing rules are relaxed there only. The package itself stays at "all".
+[[tool.basedpyright.executionEnvironments]]
+root = "tests"
+extraPaths = ["."]
+reportAny = false
+reportExplicitAny = false
+reportUnknownMemberType = false
+reportUnknownArgumentType = false
+reportUnknownVariableType = false
+reportUnknownParameterType = false
+reportUnknownLambdaType = false
+reportMissingParameterType = false
 
 [tool.ruff]
 line-length = 100
@@ -32,8 +46,11 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["COM812", "CPY001", "D100", "D101", "D103", "D105"]
+ignore = ["COM812", "CPY001", "D100", "D101", "D103", "D105", "RUF001", "RUF002", "RUF003"]
+
+[tool.ruff.lint.flake8-type-checking]
+runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 
 [tool.ruff.lint.per-file-ignores]
-"freerouter_config.py" = ["S606"]
-"tests/**" = ["D", "S101"]
+"tests/**" = ["D", "S101", "PLR2004", "PLR0913", "PLR0917"]
+"tests/conftest.py" = ["ANN401", "D", "S101"]

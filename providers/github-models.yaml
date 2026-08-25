@@ -1,0 +1,18 @@
+id: github-models
+name: GitHub Models
+name_zh: GitHub Models
+status: retired
+tier: free
+region: global
+litellm_prefix: github
+docs_url: https://github.blog/changelog/2026-07-30-github-models-is-now-retired/
+summary: 曾提供 GPT-4o、Llama、DeepSeek 等原型额度
+free_basis: 曾提供 GPT-4o、Llama、DeepSeek 等原型额度，现已下线
+free_basis_checked: 2026-08-25
+retired_on: 2026-07-30
+retirement_note: GitHub Models 已于 2026-07-30 完全退役，playground、模型目录、推理 API 和 BYOK 全部关闭，官方引导迁移到 Azure AI Foundry。调研文档中这一条已过期。
+discovery:
+  mode: static
+  models: []
+probe:
+  enabled: false

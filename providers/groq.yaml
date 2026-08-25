@@ -1,0 +1,33 @@
+id: groq
+name: Groq
+name_zh: Groq
+status: active
+tier: free
+region: global
+credential: GROQ_API_KEY
+litellm_prefix: groq
+docs_url: https://console.groq.com/docs/models
+console_url: https://console.groq.com/keys
+summary: Llama、Qwen 等全系模型，LPU 超高速推理
+free_basis: 免费层按速率限制开放全部对话模型；deny 规则排除语音与安全审核模型
+free_basis_checked: 2026-08-25
+max_models: 20
+limits:
+  rpm: 30
+  rpd: 14400
+  note: 各模型 RPD 从 1000 到 14400 不等
+discovery:
+  mode: listing
+  url: https://api.groq.com/openai/v1/models
+  auth: bearer
+  items_path: data
+  whole_catalog_is_free: true
+  id_path: id
+  deny:
+    - "*whisper*"
+    - "*tts*"
+    - "*guard*"
+    - "playai*"
+    - "*prompt-guard*"
+probe:
+  max_per_cycle: 6

@@ -1,0 +1,75 @@
+name: Watch free models
+
+# 每天检查一次各平台公开的模型目录，发现新增/下架/活动到期就自动开 PR 更新 catalog/。
+# 需要凭证才能拉目录的平台，在仓库 Secrets 里配置同名变量后 CI 也会一并刷新。
+
+on:
+  schedule:
+    - cron: "17 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: watch-free-models
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+
+      - run: uv sync --locked --all-groups
+
+      - name: Refresh the catalog
+        env:
+          ZENMUX_API_KEY: ${{ secrets.ZENMUX_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          CEREBRAS_API_KEY: ${{ secrets.CEREBRAS_API_KEY }}
+          NVIDIA_NIM_API_KEY: ${{ secrets.NVIDIA_NIM_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          COHERE_API_KEY: ${{ secrets.COHERE_API_KEY }}
+          CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_API_KEY }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SILICONFLOW_API_KEY: ${{ secrets.SILICONFLOW_API_KEY }}
+          MODELSCOPE_API_KEY: ${{ secrets.MODELSCOPE_API_KEY }}
+          B_AI_API_KEY: ${{ secrets.B_AI_API_KEY }}
+        run: uv run python -m freerouter watch providers | tee catalog-changes.txt
+
+      - name: Open a pull request when the catalog changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [ -z "$(git status --porcelain catalog/)" ]; then
+            echo "免费模型目录没有变化，不开 PR。"
+            exit 0
+          fi
+
+          BRANCH="bot/free-models-$(date -u +%Y%m%d)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+          git add catalog/
+          git commit -m "chore(catalog): 更新免费模型目录快照"
+          git push --force-with-lease origin "$BRANCH"
+
+          BODY=$(mktemp)
+          {
+            printf '各平台公开模型目录发生变化，由 `watch-free-models` 工作流自动生成。\n\n'
+            printf '## 变化\n\n'
+            grep -v '^CHANGED$' catalog-changes.txt || true
+            printf '\n\n合并前请确认：新增模型是否真的免费，消失的模型是否需要从 `providers/` 的静态列表里删掉。\n'
+          } > "$BODY"
+
+          gh pr create \
+            --title "chore(catalog): 更新免费模型目录快照" \
+            --body-file "$BODY" \
+            --base "${{ github.ref_name }}" \
+            --head "$BRANCH" 2>/dev/null || gh pr edit "$BRANCH" --body-file "$BODY"

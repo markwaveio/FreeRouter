@@ -1,0 +1,31 @@
+id: cloudflare
+name: Cloudflare Workers AI
+name_zh: Cloudflare Workers AI
+status: active
+tier: free
+region: global
+credential: CLOUDFLARE_API_KEY
+extra_credentials:
+  - CLOUDFLARE_ACCOUNT_ID
+litellm_prefix: cloudflare
+docs_url: https://developers.cloudflare.com/workers-ai/platform/pricing/
+console_url: https://dash.cloudflare.com/profile/api-tokens
+summary: Llama、Qwen、Mistral 等 50+ 模型
+free_basis: 每日 10,000 Neurons 免费额度，覆盖目录中的文本生成模型
+free_basis_checked: 2026-08-25
+max_models: 15
+limits:
+  note: 每天 10,000 Neurons 为账号共享额度
+discovery:
+  mode: listing
+  url: https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/ai/models/search?search=Text+Generation
+  auth: bearer
+  items_path: result
+  whole_catalog_is_free: true
+  id_path: name
+  deny:
+    - "*guard*"
+    - "*embed*"
+    - "*lora*"
+probe:
+  max_per_cycle: 5

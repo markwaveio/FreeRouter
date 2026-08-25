@@ -6,3 +6,7 @@ __pycache__/
 .basedpyright/
 *.pyc
 .DS_Store
+
+# 运行期状态由 refresher 生成，不入库
+state/*
+!state/.gitkeep

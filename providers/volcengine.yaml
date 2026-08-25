@@ -1,0 +1,25 @@
+id: volcengine
+name: Volcengine Ark
+name_zh: 火山引擎 (豆包)
+status: active
+tier: trial
+region: cn
+credential: VOLCENGINE_API_KEY
+litellm_prefix: volcengine
+docs_url: https://www.volcengine.com/docs/82379
+console_url: https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey
+summary: 豆包 Doubao 系列
+free_basis: 首次接入赠送测试 Token 包并有每日刷新额度；部分账号需要在方舟控制台开通对应模型
+free_basis_checked: 2026-08-25
+max_models: 8
+limits:
+  note: 若账号未开通模型或仍要求 endpoint id，探测会把该模型隔离并写入变更日志
+discovery:
+  mode: static
+  models:
+    - doubao-seed-1-6-flash-250715
+    - doubao-lite-32k
+    - doubao-lite-4k
+    - doubao-pro-32k
+probe:
+  max_per_cycle: 4

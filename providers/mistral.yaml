@@ -1,0 +1,32 @@
+id: mistral
+name: Mistral AI
+name_zh: Mistral AI
+status: active
+tier: free
+region: global
+credential: MISTRAL_API_KEY
+litellm_prefix: mistral
+docs_url: https://docs.mistral.ai/getting-started/models/models_overview/
+console_url: https://console.mistral.ai/api-keys
+summary: Mistral Small/Large、Codestral 等全系文本模型
+free_basis: 实验套餐（Experiment plan）按速率限制免费开放文本模型
+free_basis_checked: 2026-08-25
+max_models: 15
+limits:
+  rpm: 60
+  note: 约 1 RPS，每月约 10 亿 Token
+discovery:
+  mode: listing
+  url: https://api.mistral.ai/v1/models
+  auth: bearer
+  items_path: data
+  whole_catalog_is_free: true
+  id_path: id
+  deny:
+    - "*embed*"
+    - "*ocr*"
+    - "*moderation*"
+    - "*voxtral*"
+    - "*transcribe*"
+probe:
+  max_per_cycle: 5

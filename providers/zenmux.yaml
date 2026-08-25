@@ -1,0 +1,38 @@
+id: zenmux
+name: ZenMux
+name_zh: ZenMux
+status: active
+tier: free
+region: global
+credential: ZENMUX_API_KEY
+litellm_prefix: openai
+api_base: https://zenmux.ai/api/v1
+docs_url: https://zenmux.ai/docs
+console_url: https://zenmux.ai/settings/keys
+referral_url: https://zenmux.ai/invite/L4QDZW
+referral_note: 双方各得 $5 credit，被邀请人首次充值后额外获得 25% 奖励
+referral_requires_payment: true
+summary: 自动发现平台上所有 0 价模型
+free_basis: 模型目录返回的 prompt 与 completion 全部价格规则为 0，输入输出都含 text，且输出模态不含 audio/image/video
+free_basis_checked: 2026-08-25
+max_models: 25
+limits:
+  note: 以控制台公布的并发与速率为准
+discovery:
+  mode: priced_catalog
+  url: https://zenmux.ai/api/v1/models
+  auth: none
+  items_path: data
+  id_path: id
+  prompt_price_path: pricings.prompt
+  completion_price_path: pricings.completion
+  price_value_path: value
+  input_modalities_path: input_modalities
+  output_modalities_path: output_modalities
+  require_text_io: true
+  deny_output_modalities:
+    - audio
+    - image
+    - video
+probe:
+  max_per_cycle: 8
