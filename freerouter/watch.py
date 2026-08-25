@@ -252,6 +252,7 @@ def refresh_catalog(
     snapshot_path: Path = DEFAULT_SNAPSHOT,
     markdown_path: Path = DEFAULT_MARKDOWN,
     today: date | None = None,
+    env: Mapping[str, str] | None = None,
 ) -> tuple[str, ...]:
     """Refresh the committed catalog files and return the change summary lines.
 
@@ -260,7 +261,9 @@ def refresh_catalog(
     """
     providers = load_providers(providers_dir)
     previous = load_snapshot(snapshot_path)
-    current = build_snapshot(providers, previous, today or date.today())  # noqa: DTZ011 - CI runs in UTC
+    current = build_snapshot(
+        providers, previous, today or date.today(), env  # noqa: DTZ011 - CI runs in UTC
+    )
     if not content_changed(previous, current):
         return ()
     changes = diff_snapshots(previous, current)

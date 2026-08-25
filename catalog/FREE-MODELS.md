@@ -4,8 +4,8 @@
 
 | 平台 | 类型 | 区域 | 状态 | 已知限额 | 免费模型数 | 活动到期 | 注册 |
 |---|---|---|---|---|---|---|---|
-| [B.AI](https://docs.b.ai) | offer | global | active | 需要在账户中保留少量 Credits 用于身份校验；活动随时可能调整 | 2 | - | [官网](https://b.ai) |
-| [Cerebras](https://inference-docs.cerebras.ai/introduction) | free | global | active | 30 RPM / 每日约 100 万 Token | 0 | - | [官网](https://cloud.cerebras.ai/platform/apikeys) |
+| [B.AI](https://docs.b.ai) | offer | global | active | 需要在账户中保留少量 Credits 用于身份校验；活动随时可能调整 | 2 | - | [官网](https://b.ai) · [邀请链接†](https://chat.b.ai/chat?invite_code=H82845) |
+| [Cerebras](https://inference-docs.cerebras.ai/introduction) | free | global | active | 30 RPM / 每日约 100 万 Token。若探测返回 402 Payment required，说明该账号未开通免费层，去 https://cloud.cerebras.ai 的 billing 页确认套餐 | 0 | - | [官网](https://cloud.cerebras.ai/platform/apikeys) |
 | [Cloudflare Workers AI](https://developers.cloudflare.com/workers-ai/platform/pricing/) | free | global | active | 每天 10,000 Neurons 为账号共享额度 | 0 | - | [官网](https://dash.cloudflare.com/profile/api-tokens) |
 | [Cohere](https://docs.cohere.com/docs/rate-limits) | free | global | active | 20 RPM / 33 RPD / 官方限额是约 1000 次/月，这里折算成每天约 33 次填进 rpd，便于探测预算体检 | 0 | - | [官网](https://dashboard.cohere.com/api-keys) |
 | [百度文心快码 Comate](https://comate.baidu.com/) | offer | cn | watch | 见官方文档 | 0 | 2026-09-24 | - |
@@ -17,19 +17,34 @@
 | [Hugging Face 推理](https://huggingface.co/docs/inference-providers/en/pricing) | trial | global | paused | 每月约 0.10 美元额度，超出后按量计费 | 0 | - | [官网](https://huggingface.co/settings/tokens) |
 | [腾讯混元](https://cloud.tencent.com/document/product/1729) | trial | cn | active | 需要开通混元大模型服务 | 2 | - | [官网](https://console.cloud.tencent.com/hunyuan/api-key) |
 | [Mistral AI](https://docs.mistral.ai/getting-started/models/models_overview/) | free | global | active | 60 RPM / 约 1 RPS，每月约 10 亿 Token | 0 | - | [官网](https://console.mistral.ai/api-keys) |
-| [魔搭社区 ModelScope](https://modelscope.cn/docs/model-service/API-Inference/intro) | free | cn | active | 2000 RPD / 单模型约 500 次/日，需要绑定阿里云账号并完成实名 | 25 | - | [官网](https://modelscope.cn/my/myaccesstoken) |
+| [魔搭社区 ModelScope](https://modelscope.cn/docs/model-service/API-Inference/intro) | free | cn | active | 2000 RPD / 单模型约 500 次/日。**必须先绑定阿里云账号**，否则所有调用返回 401；绑定入口 https://modelscope.cn/my/settings/account | 25 | - | [官网](https://modelscope.cn/my/myaccesstoken) · [邀请链接†](https://modelscope.cn/register?inviteCode=MarkWave&invitorName=MarkWave) |
 | [月之暗面 Kimi](https://platform.moonshot.cn/docs/intro) | trial | cn | active | 速率与并发按账户等级浮动 | 3 | - | [官网](https://platform.moonshot.cn/console/api-keys) |
 | [NVIDIA NIM](https://build.nvidia.com/models) | free | global | active | 40 RPM / 需要邮箱注册并完成手机验证 | 25 | - | [官网](https://build.nvidia.com/settings/api-keys) |
-| [OpenRouter](https://openrouter.ai/docs) | free | global | active | 20 RPM / 50 RPD / 累计充值满 10 美元后约升至 1000 RPD | 17 | - | [官网](https://openrouter.ai/settings/keys) |
+| [OpenRouter](https://openrouter.ai/docs) | free | global | active | 20 RPM / 50 RPD / 累计充值满 10 美元后约升至 1000 RPD | 18 | - | [官网](https://openrouter.ai/settings/keys) |
 | [百度千帆](https://cloud.baidu.com/doc/qianfan-api/index.html) | free | cn | active | 有 QPS 限制，需要完成实名认证 | 6 | - | [官网](https://console.bce.baidu.com/iam/#/iam/apikey/list) |
-| [硅基流动 SiliconFlow](https://docs.siliconflow.cn/cn/userguide/quickstart) | free | cn | active | 免费模型有 RPM/TPM 限制，具体见控制台 | 0 | - | [官网](https://cloud.siliconflow.cn/account/ak) |
+| [硅基流动 SiliconFlow](https://docs.siliconflow.cn/cn/userguide/quickstart) | free | cn | active | 免费模型有 RPM/TPM 限制，具体见控制台 | 0 | - | [官网](https://cloud.siliconflow.cn/account/ak) · [邀请链接†](https://cloud.siliconflow.cn/i/CuI9M5Ht) |
 | [讯飞星火](https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html) | trial | cn | active | API Key 使用「APIPassword」形式，需要在控制台开通对应服务 | 2 | - | [官网](https://console.xfyun.cn/services/cbm) |
 | [阶跃星辰 StepFun](https://platform.stepfun.com/docs/overview/concept) | trial | cn | active | 体验额度有效期较短 | 2 | - | [官网](https://platform.stepfun.com/interface-key) |
 | [火山引擎 (豆包)](https://www.volcengine.com/docs/82379) | trial | cn | active | 若账号未开通模型或仍要求 endpoint id，探测会把该模型隔离并写入变更日志 | 4 | - | [官网](https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey) |
-| [ZenMux](https://zenmux.ai/docs) | free | global | active | 以控制台公布的并发与速率为准 | 7 | - | [官网](https://zenmux.ai/settings/keys) |
-| [智谱 AI (BigModel)](https://docs.bigmodel.cn/cn/guide/start/model-overview) | free | cn | active | 免费模型并发较低（部分为 1 并发），需要手机号注册 | 6 | - | [官网](https://bigmodel.cn/usercenter/apikeys) |
+| [ZenMux](https://zenmux.ai/docs) | free | global | active | 以控制台公布的并发与速率为准 | 7 | - | [官网](https://zenmux.ai/settings/keys) · [邀请链接†](https://zenmux.ai/invite/L4QDZW) |
+| [智谱 AI (BigModel)](https://docs.bigmodel.cn/cn/guide/start/model-overview) | free | cn | active | 免费模型并发较低（部分为 1 并发），需要手机号注册 | 6 | - | [官网](https://bigmodel.cn/usercenter/apikeys) · [邀请链接†](https://www.bigmodel.cn/invite?icode=bkHx%2Fep6dDks7UF3yJZB4LC%2Fk7jQAKmT1mpEiZXXnFw%3D) |
 
-本目录中的注册链接均为平台官网直达，不含任何邀请或返利链接。
+### † 关于邀请链接
+
+标了 † 的是邀请链接，通过它注册，你和本项目维护者双方都会获得平台奖励：
+
+- **B.AI**：被邀请人注册可领 30 万积分（官方仅公布受邀方奖励，邀请方奖励未说明）
+- **魔搭社区 ModelScope**：双方各得魔方（ModelScope 平台积分），注册即得无需充值
+- **硅基流动 SiliconFlow**：双方各得 2000 万 tokens（约 ¥14 平台额度，不可提现）
+- **ZenMux**：双方各得 $5 credit，被邀请人首次充值后额外获得 25% 奖励
+- **智谱 AI (BigModel)**：好友实名注册后双方各得 Tokens 资源包，无需充值
+
+旁边的「官网」是无返利的直达入口，两个都能用，注册流程完全一样。
+
+**返利不影响任何技术判断。** 一个平台能不能进 `providers/`、
+一个模型能不能进 `free-router` 池，只取决于该平台 `free_basis` 字段写明的免费依据
+和真实探测结果；排序按平台 id 字母序，与有无返利无关。
+这一点有测试守着（见 `tests/test_registry.py`）。
 
 ## 各平台当前免费模型
 
@@ -180,6 +195,7 @@ _当前没有可路由的免费模型。_
 - `google/gemma-4-31b-it:free`
 - `liquid/lfm-2.5-2.6b:free`
 - `minimax/minimax-m2.7:free`
+- `minimax/minimax-m3:free`
 - `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`
 - `nvidia/nemotron-3-super-120b-a12b:free`
 - `nvidia/nemotron-3-ultra-550b-a55b:free`

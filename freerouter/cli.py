@@ -273,8 +273,12 @@ def cmd_docs(argv: Sequence[str]) -> int:
 
 def cmd_watch(argv: Sequence[str]) -> int:
     """Refresh the committed catalog snapshot and documentation."""
-    providers_dir = Path(argv[0]) if argv else Path("providers")
-    changes = refresh_catalog(providers_dir)
+    root = Path(argv[0]) if argv else Path()
+    providers_dir = root / "providers" if (root / "providers").is_dir() else Path("providers")
+    # Locally the project's `.env` is not exported, so read it directly; in CI the
+    # credentials arrive as real environment variables and this is simply empty.
+    env = {**os.environ, **read_env_file(root / ".env")}
+    changes = refresh_catalog(providers_dir, env=env)
     for line in changes:
         print(line)  # noqa: T201
     print("CHANGED" if changes else "UNCHANGED")  # noqa: T201

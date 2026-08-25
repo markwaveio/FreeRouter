@@ -4,7 +4,7 @@ import hashlib
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Final
 
-from freerouter.registry import expand_env
+from freerouter.registry import expand_env, resolve_extra_params
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping, Sequence
@@ -59,9 +59,16 @@ def direct_alias(provider_id: str, model_id: str) -> str:
     return f"{DIRECT_NAMESPACE}/{provider_id}/{model_id}"
 
 
-def deployment_id(provider_id: str, model_id: str, alias: str) -> str:
-    """Derive a stable, collision-resistant id so reruns converge instead of duplicating."""
-    digest = hashlib.sha256(f"{provider_id}|{model_id}|{alias}".encode()).hexdigest()
+def deployment_id(provider_id: str, model_id: str, alias: str, fingerprint: str = "") -> str:
+    """Derive a stable id from the deployment's whole desired configuration.
+
+    The fingerprint has to cover every field that ends up in ``litellm_params``, not
+    just the model's identity. Otherwise editing a provider's request parameters
+    leaves the id unchanged, the reconciler sees no difference, and the live
+    deployment silently keeps serving the old configuration.
+    """
+    material = f"{provider_id}|{model_id}|{alias}|{fingerprint}"
+    digest = hashlib.sha256(material.encode()).hexdigest()
     return f"{MANAGED_PREFIX}{digest[:DEPLOYMENT_ID_CHARS]}"
 
 
@@ -72,17 +79,28 @@ def is_managed(candidate: str) -> bool:
 
 def _build(provider: Provider, model_id: str, alias: str, api_base: str | None) -> Deployment:
     """Assemble one deployment record for a provider, model and alias."""
+    litellm_model = f"{provider.litellm_prefix}/{model_id}"
+    extra = tuple(sorted(resolve_extra_params(provider, model_id).items()))
+    fingerprint = "|".join(
+        [
+            litellm_model,
+            api_base or "",
+            provider.credential or "",
+            str(provider.limits.rpm or ""),
+            repr(extra),
+        ]
+    )
     return Deployment(
-        deployment_id=deployment_id(provider.provider_id, model_id, alias),
+        deployment_id=deployment_id(provider.provider_id, model_id, alias, fingerprint),
         alias=alias,
         provider_id=provider.provider_id,
         model_id=model_id,
-        litellm_model=f"{provider.litellm_prefix}/{model_id}",
+        litellm_model=litellm_model,
         tier=provider.tier.value,
         api_base=api_base,
         api_key_env=provider.credential,
         rpm=provider.limits.rpm,
-        extra_params=tuple(sorted(provider.extra_params.items())),
+        extra_params=extra,
     )
 
 

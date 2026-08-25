@@ -2,7 +2,7 @@
 
 FreeRouter 把多个平台的免费模型入口汇总成一个 OpenAI 兼容 API，供 Agent、编辑器和脚本调用。它基于 [LiteLLM Proxy](https://github.com/BerriAI/litellm) 构建，只增加免费模型发现、健康探测、自动增删和本地部署配置，不复制 LiteLLM 源码。
 
-**一句话**：免费模型天天挂，FreeRouter 让你的 Agent 感觉不到。
+**一句话**：免费模型天天挂，FreeRouter 让你的 Agent 感觉不到，免去多Agent手动配置、自动轮询可用模型。
 
 ## 它做什么
 
@@ -12,7 +12,9 @@ FreeRouter 把多个平台的免费模型入口汇总成一个 OpenAI 兼容 API
 - **活动变化自动跟踪**。限时活动到期前会提醒，平台目录里模型的增减会写进变更日志并推到你的 webhook。
 - **本地部署**。Docker Compose 三个容器，只监听 `127.0.0.1`。
 
-## 先领一个免费 Key
+## 先领一批免费 Key
+
+
 
 <!-- BEGIN GENERATED: signup — 由 make docs 生成，请勿手改 -->
 
@@ -65,11 +67,11 @@ Model:    free-router
 
 ## 三种模型名
 
-| 模型名 | 含义 |
-|---|---|
-| `free-router` | 所有**已探测通过**的免费模型，跨平台自动分流与故障转移 |
-| `<平台>-free` | 只用某个平台，例如 `groq-free`、`zenmux-free`、`zhipu-free` |
-| `fr/<平台>/<模型>` | 精确指定一个模型，例如 `fr/openrouter/z-ai/glm-5.2:free` |
+| 模型名               | 含义                                                             |
+| -------------------- | ---------------------------------------------------------------- |
+| `free-router`      | 所有**已探测通过**的免费模型，跨平台自动分流与故障转移     |
+| `<平台>-free`      | 只用某个平台，例如`groq-free`、`zenmux-free`、`zhipu-free` |
+| `fr/<平台>/<模型>` | 精确指定一个模型，例如`fr/openrouter/z-ai/glm-5.2:free`        |
 
 被隔离的模型会从前两种里移除，但保留 `fr/…` 这个入口——方便你自己确认它到底怎么挂的。
 
@@ -92,11 +94,11 @@ Model:    free-router
 
 **探测不花冤枉额度**：真实调用的成功和失败，LiteLLM 都记了 `error_code` 和 `error_message`，跟主动探测能拿到的信息一模一样。所以只要你的 Agent 在用这个网关，健康模型就一直在被免费验证，探测只花在三种情况上：
 
-| 情况 | 为什么必须探测 |
-|---|---|
-| 新发现的模型 | 还没进 `free-router`，收不到真实流量，需要一次探测才敢放进池 |
-| 隔离中的模型 | 已被移出池子收不到流量，靠退避重试才能恢复 |
-| 长时间零流量的健康模型 | 超过 `FREEROUTER_RECHECK_HOURS` 没有成功记录，需要确认还活着 |
+| 情况                   | 为什么必须探测                                                |
+| ---------------------- | ------------------------------------------------------------- |
+| 新发现的模型           | 还没进`free-router`，收不到真实流量，需要一次探测才敢放进池 |
+| 隔离中的模型           | 已被移出池子收不到流量，靠退避重试才能恢复                    |
+| 长时间零流量的健康模型 | 超过`FREEROUTER_RECHECK_HOURS` 没有成功记录，需要确认还活着 |
 
 退避最长会等到 12 小时。如果你已经把根因修好了（补了 Key、绑定了账号、改了平台参数），不用干等——`make recheck` 清掉隔离状态，下一轮立刻重新探测。
 
@@ -109,13 +111,13 @@ cycle complete: healthy=20 traffic-verified=26 probed=0 added=0 deleted=0
 
 探测结果分五类，处理方式不同：
 
-| 结果 | 判定 | 处理 |
-|---|---|---|
-| 429 / 限流 | 模型活着，只是挤 | **不计失败** |
-| 404 / model not found | 模型下架了 | 立刻隔离 |
-| 402 / 余额不足 | 额度用尽 | 隔离，1 小时后重试（日额度会重置） |
-| 401 / 403 | Key 有问题 | 计入失败 |
-| 5xx / 超时 | 临时抖动 | 计入失败，连续 3 次才隔离 |
+| 结果                  | 判定             | 处理                               |
+| --------------------- | ---------------- | ---------------------------------- |
+| 429 / 限流            | 模型活着，只是挤 | **不计失败**                 |
+| 404 / model not found | 模型下架了       | 立刻隔离                           |
+| 402 / 余额不足        | 额度用尽         | 隔离，1 小时后重试（日额度会重置） |
+| 401 / 403             | Key 有问题       | 计入失败                           |
+| 5xx / 超时            | 临时抖动         | 计入失败，连续 3 次才隔离          |
 
 隔离后按指数退避重试（30 分钟起，最长 12 小时），恢复了自动放回池子并记一条 `revived`。
 
@@ -129,11 +131,11 @@ cycle complete: healthy=20 traffic-verified=26 probed=0 added=0 deleted=0
 
 FreeRouter 不会因为「便宜」就把模型当免费。三种发现方式各有各的依据：
 
-| 方式 | 判定依据 | 用在哪些平台 |
-|---|---|---|
-| `priced_catalog` | 目录返回的 prompt 与 completion 价格**全部为 0**，输入输出都含 text，且输出模态不含 audio/image/video | ZenMux、OpenRouter |
-| `listing` | 模型出现在平台的实时模型列表里，且**必须**二选一给出免费依据：写 `allow` 白名单，或显式声明 `whole_catalog_is_free: true` | Groq、Cerebras、Gemini、NVIDIA NIM、ModelScope、Mistral、Cohere、Cloudflare、硅基流动、B.AI |
-| `static` | 官方文档明确写了永久免费或赠送额度的模型清单 | 智谱、千帆、百炼、DeepSeek、火山、Kimi、混元、星火、阶跃 |
+| 方式               | 判定依据                                                                                                                            | 用在哪些平台                                                                                |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `priced_catalog` | 目录返回的 prompt 与 completion 价格**全部为 0**，输入输出都含 text，且输出模态不含 audio/image/video                         | ZenMux、OpenRouter                                                                          |
+| `listing`        | 模型出现在平台的实时模型列表里，且**必须**二选一给出免费依据：写 `allow` 白名单，或显式声明 `whole_catalog_is_free: true` | Groq、Cerebras、Gemini、NVIDIA NIM、ModelScope、Mistral、Cohere、Cloudflare、硅基流动、B.AI |
+| `static`         | 官方文档明确写了永久免费或赠送额度的模型清单                                                                                        | 智谱、千帆、百炼、DeepSeek、火山、Kimi、混元、星火、阶跃                                    |
 
 > 这两条守卫都是被真实数据逼出来的，不是想象出来的风险：
 >
@@ -226,27 +228,27 @@ docker compose exec refresher python -m freerouter calls 30 --no-probe
 
 三个命令各看一层：
 
-| 命令 | 回答什么问题 |
-|---|---|
-| `make calls` | 刚才那次请求到底走了谁？多久？多少 token？ |
-| `make pool` | 现在有哪些模型可用？挂掉的是为什么挂的？ |
-| `make changes` | 这几天模型池发生过什么增删？ |
+| 命令             | 回答什么问题                               |
+| ---------------- | ------------------------------------------ |
+| `make calls`   | 刚才那次请求到底走了谁？多久？多少 token？ |
+| `make pool`    | 现在有哪些模型可用？挂掉的是为什么挂的？   |
+| `make changes` | 这几天模型池发生过什么增删？               |
 
 ## 挂自己的邀请链接
 
 ### 各平台邀请计划调研（2026-08-25 核查）
 
-| 平台 | 邀请计划 | 奖励 | 是否需要充值 |
-|---|---|---|---|
-| **硅基流动** | 有，已接入 | 双方各得 2000 万 tokens（约 ¥14 额度） | **否，注册即得** |
-| **智谱 BigModel** | 有，已接入 | 好友实名注册后双方各得 Tokens 资源包 | **否，注册即得** |
-| **魔搭 ModelScope** | 有，已接入 | 双方各得魔方（平台积分） | **否，注册即得** |
-| **ZenMux** | 有，已接入 | 双方各得 $5 credit，被邀请人首充额外 25% | **是，奖励绑定首充** |
-| OpenRouter | 仅内部推荐，无公开 affiliate | 双方各得 $5 credits | **是，需消费 $10+** |
-| 阿里云百炼 / DeepSeek / Kimi / 火山引擎 | 公开渠道未发现 | — | — |
-| 百度千帆 / 腾讯混元 / 阶跃星辰 / 讯飞星火 | 公开渠道未发现 | — | — |
-| Groq / Cerebras / Gemini / NVIDIA NIM | 公开渠道未发现 | — | — |
-| Mistral / Cohere / Cloudflare / B.AI | 公开渠道未发现 | — | — |
+| 平台                                      | 邀请计划                     | 奖励                                     | 是否需要充值               |
+| ----------------------------------------- | ---------------------------- | ---------------------------------------- | -------------------------- |
+| **硅基流动**                        | 有，已接入                   | 双方各得 2000 万 tokens（约 ¥14 额度）  | **否，注册即得**     |
+| **智谱 BigModel**                   | 有，已接入                   | 好友实名注册后双方各得 Tokens 资源包     | **否，注册即得**     |
+| **魔搭 ModelScope**                 | 有，已接入                   | 双方各得魔方（平台积分）                 | **否，注册即得**     |
+| **ZenMux**                          | 有，已接入                   | 双方各得 $5 credit，被邀请人首充额外 25% | **是，奖励绑定首充** |
+| OpenRouter                                | 仅内部推荐，无公开 affiliate | 双方各得 $5 credits                      | **是，需消费 $10+**  |
+| 阿里云百炼 / DeepSeek / Kimi / 火山引擎   | 公开渠道未发现               | —                                       | —                         |
+| 百度千帆 / 腾讯混元 / 阶跃星辰 / 讯飞星火 | 公开渠道未发现               | —                                       | —                         |
+| Groq / Cerebras / Gemini / NVIDIA NIM     | 公开渠道未发现               | —                                       | —                         |
+| Mistral / Cohere / Cloudflare / B.AI      | 公开渠道未发现               | —                                       | —                         |
 
 > 「公开渠道未发现」只代表搜索和官方文档里没查到，**不代表一定没有**。ZenMux 和 ModelScope 起初都归在这一类，登录账户后台后都找到了邀请入口。想确认某家有没有，最快的办法是登进自己的控制台翻「邀请/推荐/Referral」。
 
@@ -264,11 +266,11 @@ referral_note: 双方各得 2000 万 tokens（约 ¥14 平台额度，不可提�
 
 然后跑一次 `make docs`，链接会**同时出现在三个用户真正会看的地方**：
 
-| 位置 | 效果 |
-|---|---|
-| README 上方的平台表格 | 「注册†」按钮直接指向你的链接，旁边保留「官网」直达 |
-| `.env.example` 里对应 Key 的上方注释 | 用户填 Key 时正好看到「注册领 Key: 你的链接」 |
-| `make keys` 终端输出 | 列出所有没配置的平台和注册地址 |
+| 位置                                   | 效果                                                 |
+| -------------------------------------- | ---------------------------------------------------- |
+| README 上方的平台表格                  | 「注册†」按钮直接指向你的链接，旁边保留「官网」直达 |
+| `.env.example` 里对应 Key 的上方注释 | 用户填 Key 时正好看到「注册领 Key: 你的链接」        |
+| `make keys` 终端输出                 | 列出所有没配置的平台和注册地址                       |
 
 这三处都是从 `providers/*.yaml` 生成的，中间用 `<!-- BEGIN GENERATED -->` 标记圈起来，手写内容不受影响。改了注册表忘了跑 `make docs`，CI 会失败（`test_generated_blocks_in_the_repo_are_up_to_date`）。
 
@@ -276,11 +278,11 @@ referral_note: 双方各得 2000 万 tokens（约 ¥14 平台额度，不可提�
 
 三条规矩是**代码强制**的，不是自觉：
 
-| 规矩 | 怎么强制的 |
-|---|---|
-| 填了 `referral_url` 就必须填 `referral_note` 说明双方各得什么 | 缺了直接加载失败（`ReferralWithoutDisclosureError`） |
-| 必须同时保留 `console_url` 无返利入口，读者可以二选一 | `test_shipped_referral_links_all_state_the_benefit` |
-| 返利不得参与任何路由决策 | `test_referral_links_cannot_influence_routing`：`discovery/planning/probe/refresh/traffic` 五个模块一旦出现 `referral` 字样就失败 |
+| 规矩                                                             | 怎么强制的                                                                                                                              |
+| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 填了`referral_url` 就必须填 `referral_note` 说明双方各得什么 | 缺了直接加载失败（`ReferralWithoutDisclosureError`）                                                                                  |
+| 必须同时保留`console_url` 无返利入口，读者可以二选一           | `test_shipped_referral_links_all_state_the_benefit`                                                                                   |
+| 返利不得参与任何路由决策                                         | `test_referral_links_cannot_influence_routing`：`discovery/planning/probe/refresh/traffic` 五个模块一旦出现 `referral` 字样就失败 |
 
 最后一条最要紧。这个项目卖的是「诚实判定免费模型」，一旦让人怀疑「是不是因为有返利才把这家排前面」，公信力就没了。所以哪个平台进 `providers/`、哪个模型进 `free-router` 池，只看 `free_basis` 写明的免费依据和真实探测结果，排序按平台 id 字母序——这条用测试锁死，改不动。
 
@@ -336,36 +338,36 @@ discovery:
 
 ## 常用命令
 
-| 命令 | 用途 |
-|---|---|
-| `make verify` | 一条命令自检：网关、模型名、池健康度、刷新器、真实请求。`make verify MODEL=zenmux-free` 只测一个平台 |
-| `make setup` | 生成 `.env`；已存在时补齐新增的配置项，不动已有值 |
-| `make up` / `make down` | 启动 / 停止 |
-| `make pool` | 查看当前模型池，每个模型的健康状态和失败原因 |
-| `make calls` | 查看最近的调用记录：请求名 → 实际命中哪个平台的哪个模型、耗时、tokens。`make calls N=50` 调条数 |
-| `make changes` | 查看最近的模型池变更记录 |
-| `make refresh` | 立刻跑一轮发现 + 探测 + 热更新 |
-| `make recheck` | 修好根因（补了 Key、绑了账号、改了配置）后清掉隔离与退避，立刻重新探测。`make recheck P=modelscope` 只重检一个平台 |
-| `make keys` | 列出所有平台：哪些已配置、没配的去哪注册领 Key |
-| `make docs` | 把平台表格同步进 README 和 `.env.example` 的生成块 |
-| `make catalog` | 刷新 `catalog/` 快照，并同步 README 与 `.env.example` |
-| `make logs` | 网关与刷新器日志 |
-| `make test` | 发一次真实 API 请求 |
-| `make update` | 拉取并重启最新 LiteLLM 镜像 |
-| `make check` | 跑测试、lint、类型检查和 compose 校验 |
-| `make install-skill` | 安装 FreeRouter Skill |
+| 命令                        | 用途                                                                                                                 |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `make verify`             | 一条命令自检：网关、模型名、池健康度、刷新器、真实请求。`make verify MODEL=zenmux-free` 只测一个平台               |
+| `make setup`              | 生成`.env`；已存在时补齐新增的配置项，不动已有值                                                                   |
+| `make up` / `make down` | 启动 / 停止                                                                                                          |
+| `make pool`               | 查看当前模型池，每个模型的健康状态和失败原因                                                                         |
+| `make calls`              | 查看最近的调用记录：请求名 → 实际命中哪个平台的哪个模型、耗时、tokens。`make calls N=50` 调条数                   |
+| `make changes`            | 查看最近的模型池变更记录                                                                                             |
+| `make refresh`            | 立刻跑一轮发现 + 探测 + 热更新                                                                                       |
+| `make recheck`            | 修好根因（补了 Key、绑了账号、改了配置）后清掉隔离与退避，立刻重新探测。`make recheck P=modelscope` 只重检一个平台 |
+| `make keys`               | 列出所有平台：哪些已配置、没配的去哪注册领 Key                                                                       |
+| `make docs`               | 把平台表格同步进 README 和`.env.example` 的生成块                                                                  |
+| `make catalog`            | 刷新`catalog/` 快照，并同步 README 与 `.env.example`                                                             |
+| `make logs`               | 网关与刷新器日志                                                                                                     |
+| `make test`               | 发一次真实 API 请求                                                                                                  |
+| `make update`             | 拉取并重启最新 LiteLLM 镜像                                                                                          |
+| `make check`              | 跑测试、lint、类型检查和 compose 校验                                                                                |
+| `make install-skill`      | 安装 FreeRouter Skill                                                                                                |
 
 ## 调优
 
 全部在 `.env` 里：
 
-| 变量 | 默认 | 说明 |
-|---|---|---|
-| `FREEROUTER_REFRESH_INTERVAL` | `21600` | 刷新间隔（秒），最小 300 |
-| `FREEROUTER_RECHECK_HOURS` | `24` | 健康模型多久**没有成功记录**才需要主动探测（有真实流量就一直不触发） |
-| `FREEROUTER_FAILURE_THRESHOLD` | `3` | 连续失败几次移出池子 |
-| `FREEROUTER_OFFER_WARN_DAYS` | `14` | 限时活动到期前几天提醒 |
-| `FREEROUTER_NOTIFY_WEBHOOK` | 空 | 变更推送地址 |
+| 变量                             | 默认      | 说明                                                                       |
+| -------------------------------- | --------- | -------------------------------------------------------------------------- |
+| `FREEROUTER_REFRESH_INTERVAL`  | `21600` | 刷新间隔（秒），最小 300                                                   |
+| `FREEROUTER_RECHECK_HOURS`     | `24`    | 健康模型多久**没有成功记录**才需要主动探测（有真实流量就一直不触发） |
+| `FREEROUTER_FAILURE_THRESHOLD` | `3`     | 连续失败几次移出池子                                                       |
+| `FREEROUTER_OFFER_WARN_DAYS`   | `14`    | 限时活动到期前几天提醒                                                     |
+| `FREEROUTER_NOTIFY_WEBHOOK`    | 空        | 变更推送地址                                                               |
 
 每个平台的 `max_models` 和 `probe.max_per_cycle` 在各自的 YAML 里调。
 

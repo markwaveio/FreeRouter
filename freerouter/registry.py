@@ -88,6 +88,13 @@ class Discovery(BaseModel):
     extra_models: tuple[str, ...] = ()
 
 
+class ExtraParamsRule(BaseModel):
+    model_config: ClassVar[ConfigDict] = ConfigDict(frozen=True, extra="forbid")
+
+    match: tuple[str, ...]
+    params: dict[str, str | int | float | bool | None] = Field(default_factory=dict)
+
+
 class ProbeSettings(BaseModel):
     model_config: ClassVar[ConfigDict] = ConfigDict(frozen=True, extra="forbid")
 
@@ -123,9 +130,8 @@ class Provider(BaseModel):
     free_basis: str
     free_basis_checked: date
     max_models: int = 20
-    extra_params: dict[str, str | int | float | bool] = Field(
-        default_factory=dict,
-    )
+    extra_params: dict[str, str | int | float | bool] = Field(default_factory=dict)
+    extra_params_overrides: tuple[ExtraParamsRule, ...] = ()
     limits: Limits = Field(default_factory=Limits)
     offer: Offer = Field(default_factory=Offer)
     discovery: Discovery
@@ -209,6 +215,21 @@ def credentials_for(provider: Provider, env: Mapping[str, str] | None = None) ->
             return {}
         resolved[name] = value
     return resolved
+
+
+def resolve_extra_params(provider: Provider, model_id: str) -> dict[str, str | int | float | bool]:
+    """Resolve the request parameters one model needs on top of the provider defaults.
+
+    Platform quirks are rarely uniform: on ModelScope some models return an empty
+    body unless thinking is disabled, while the thinking-only variants reject that
+    same parameter. A rule whose value is null drops the key entirely, which is how
+    a model opts out of a provider-wide default.
+    """
+    resolved: dict[str, str | int | float | bool | None] = dict(provider.extra_params)
+    for rule in provider.extra_params_overrides:
+        if matches_any(model_id, rule.match):
+            resolved.update(rule.params)
+    return {name: value for name, value in resolved.items() if value is not None}
 
 
 def matches_any(model_id: str, patterns: Sequence[str]) -> bool:

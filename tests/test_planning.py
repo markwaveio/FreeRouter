@@ -142,3 +142,56 @@ def test_payload_marks_the_deployment_free_and_traceable() -> None:
 
 def test_direct_alias_keeps_the_platform_model_id_addressable() -> None:
     assert direct_alias("openrouter", "z-ai/glm-5.2:free") == "fr/openrouter/z-ai/glm-5.2:free"
+
+
+def test_changing_request_parameters_forces_the_deployment_to_be_replaced() -> None:
+    """改了平台请求参数，线上部署必须跟着换，不能悄悄留着旧配置。"""
+    # Given
+    state = make_state(make_health(status=HealthStatus.HEALTHY))
+    before = plan_deployments([make_provider()], state, ENV)
+    after = plan_deployments(
+        [make_provider(extra_params={"enable_thinking": False})], state, ENV
+    )
+
+    # When
+    to_add, to_delete = diff(after, [entry.deployment_id for entry in before])
+
+    # Then
+    assert len(to_add) == len(after)
+    assert len(to_delete) == len(before)
+
+
+def test_per_model_rules_override_the_provider_default() -> None:
+    # Given a provider whose thinking-only variant must not receive the flag
+    provider = make_provider(
+        extra_params={"enable_thinking": False},
+        extra_params_overrides=[
+            {"match": ["*-thinking"], "params": {"enable_thinking": None}}
+        ],
+        discovery={"mode": "static", "models": ["base", "big-thinking"]},
+    )
+    state = make_state(
+        make_health(model_id="base", status=HealthStatus.HEALTHY),
+        make_health(model_id="big-thinking", status=HealthStatus.HEALTHY),
+    )
+
+    # When
+    plan = {e.model_id: dict(e.extra_params) for e in plan_deployments([provider], state, ENV)}
+
+    # Then
+    assert plan["base"] == {"enable_thinking": False}
+    assert plan["big-thinking"] == {}
+
+
+def test_request_parameters_reach_the_litellm_payload() -> None:
+    # Given
+    provider = make_provider(extra_params={"enable_thinking": False})
+    state = make_state(make_health(status=HealthStatus.HEALTHY))
+
+    # When
+    payload = next(iter(plan_deployments([provider], state, ENV))).payload()
+
+    # Then
+    params = payload["litellm_params"]
+    assert isinstance(params, dict)
+    assert params["enable_thinking"] is False
