@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_on": "2026-08-25",
+  "generated_on": "2026-08-30",
   "providers": {
     "b-ai": {
       "name_zh": "B.AI",
@@ -231,9 +231,9 @@
         "Qwen/Qwen3.5-35B-A3B",
         "Qwen/Qwen3.5-397B-A17B",
         "Qwen/Qwen3.8-27B",
+        "Qwen/Qwen3.8-Flash-Next",
         "Shanghai_AI_Laboratory/Intern-S1",
-        "Shanghai_AI_Laboratory/Intern-S1-mini",
-        "Shanghai_AI_Laboratory/Intern-S2-Preview"
+        "Shanghai_AI_Laboratory/Intern-S1-mini"
       ],
       "note": null
     },
@@ -278,11 +278,6 @@
         "ibm/granite-3.0-8b-instruct",
         "ibm/granite-34b-code-instruct",
         "ibm/granite-8b-code-instruct",
-        "meta/llama-3.1-70b-instruct",
-        "meta/llama-3.1-8b-instruct",
-        "meta/llama-3.2-1b-instruct",
-        "meta/llama-3.2-3b-instruct",
-        "meta/llama-3.3-70b-instruct",
         "microsoft/phi-3.5-moe-instruct",
         "mistralai/codestral-22b-instruct-v0.1",
         "mistralai/mistral-7b-instruct-v0.3",
@@ -291,7 +286,9 @@
         "nvidia/llama-3.1-nemotron-51b-instruct",
         "nvidia/llama-3.1-nemotron-70b-instruct",
         "nvidia/llama3-chatqa-1.5-70b",
-        "nvidia/mistral-nemo-minitron-8b-8k-instruct"
+        "nvidia/mistral-nemo-minitron-8b-8k-instruct",
+        "nvidia/nemotron-4-340b-instruct",
+        "zyphra/zamba2-7b-instruct"
       ],
       "note": null
     },
@@ -311,6 +308,7 @@
         "dots-studio/dots-3-note-preview:free",
         "google/gemma-4-26b-a4b-it:free",
         "google/gemma-4-31b-it:free",
+        "inclusionai/ling-3.0-flash-fin:free",
         "liquid/lfm-2.5-2.6b:free",
         "minimax/minimax-m2.7:free",
         "minimax/minimax-m3:free",
@@ -321,7 +319,6 @@
         "openrouter/free",
         "poolside/laguna-s-2.1:free",
         "poolside/laguna-xs-2.1:free",
-        "stealth/ox-alpha",
         "thinkingmachines/inkling-small:free",
         "thinkingmachines/inkling:free",
         "z-ai/glm-5.2:free"
@@ -428,10 +425,8 @@
       "referral_url": "https://zenmux.ai/invite/L4QDZW",
       "referral_note": "双方各得 $5 credit，被邀请人首次充值后额外获得 25% 奖励",
       "models": [
-        "deepseek/deepseek-v4-flash-vision-exp-free",
         "dots-studio/dots3-note-prev",
         "inclusionai/ling-3.0-tiny",
-        "sapiens-ai/agnes-2.0-flash",
         "sapiens-ai/agnes-2.5-flash",
         "z-ai/glm-4.6v-flash-free",
         "z-ai/glm-4.7-flash-free"
