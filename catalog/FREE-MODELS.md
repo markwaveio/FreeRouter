@@ -1,6 +1,6 @@
 # FreeRouter 免费模型目录
 
-最后变更：2026-08-25（由 `.github/workflows/watch-free-models.yml` 自动生成，请勿手改）
+最后变更：2026-08-31（由 `.github/workflows/watch-free-models.yml` 自动生成，请勿手改）
 
 | 平台 | 类型 | 区域 | 状态 | 已知限额 | 免费模型数 | 活动到期 | 注册 |
 |---|---|---|---|---|---|---|---|
@@ -19,14 +19,14 @@
 | [Mistral AI](https://docs.mistral.ai/getting-started/models/models_overview/) | free | global | active | 60 RPM / 约 1 RPS，每月约 10 亿 Token | 0 | - | [官网](https://console.mistral.ai/api-keys) |
 | [魔搭社区 ModelScope](https://modelscope.cn/docs/model-service/API-Inference/intro) | free | cn | active | 2000 RPD / 单模型约 500 次/日。**必须先绑定阿里云账号**，否则所有调用返回 401；绑定入口 https://modelscope.cn/my/settings/account | 25 | - | [官网](https://modelscope.cn/my/myaccesstoken) · [邀请链接†](https://modelscope.cn/register?inviteCode=MarkWave&invitorName=MarkWave) |
 | [月之暗面 Kimi](https://platform.moonshot.cn/docs/intro) | trial | cn | active | 速率与并发按账户等级浮动 | 3 | - | [官网](https://platform.moonshot.cn/console/api-keys) |
-| [NVIDIA NIM](https://build.nvidia.com/models) | free | global | active | 40 RPM / 需要邮箱注册并完成手机验证 | 25 | - | [官网](https://build.nvidia.com/settings/api-keys) |
+| [NVIDIA NIM](https://build.nvidia.com/models) | free | global | active | 40 RPM / 需要邮箱注册并完成手机验证 | 22 | - | [官网](https://build.nvidia.com/settings/api-keys) |
 | [OpenRouter](https://openrouter.ai/docs) | free | global | active | 20 RPM / 50 RPD / 累计充值满 10 美元后约升至 1000 RPD | 18 | - | [官网](https://openrouter.ai/settings/keys) |
 | [百度千帆](https://cloud.baidu.com/doc/qianfan-api/index.html) | free | cn | active | 有 QPS 限制，需要完成实名认证 | 6 | - | [官网](https://console.bce.baidu.com/iam/#/iam/apikey/list) |
 | [硅基流动 SiliconFlow](https://docs.siliconflow.cn/cn/userguide/quickstart) | free | cn | active | 免费模型有 RPM/TPM 限制，具体见控制台 | 0 | - | [官网](https://cloud.siliconflow.cn/account/ak) · [邀请链接†](https://cloud.siliconflow.cn/i/CuI9M5Ht) |
 | [讯飞星火](https://www.xfyun.cn/doc/spark/HTTP%E8%B0%83%E7%94%A8%E6%96%87%E6%A1%A3.html) | trial | cn | active | API Key 使用「APIPassword」形式，需要在控制台开通对应服务 | 2 | - | [官网](https://console.xfyun.cn/services/cbm) |
 | [阶跃星辰 StepFun](https://platform.stepfun.com/docs/overview/concept) | trial | cn | active | 体验额度有效期较短 | 2 | - | [官网](https://platform.stepfun.com/interface-key) |
 | [火山引擎 (豆包)](https://www.volcengine.com/docs/82379) | trial | cn | active | 若账号未开通模型或仍要求 endpoint id，探测会把该模型隔离并写入变更日志 | 4 | - | [官网](https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey) |
-| [ZenMux](https://zenmux.ai/docs) | free | global | active | 以控制台公布的并发与速率为准 | 7 | - | [官网](https://zenmux.ai/settings/keys) · [邀请链接†](https://zenmux.ai/invite/L4QDZW) |
+| [ZenMux](https://zenmux.ai/docs) | free | global | active | 以控制台公布的并发与速率为准 | 5 | - | [官网](https://zenmux.ai/settings/keys) · [邀请链接†](https://zenmux.ai/invite/L4QDZW) |
 | [智谱 AI (BigModel)](https://docs.bigmodel.cn/cn/guide/start/model-overview) | free | cn | active | 免费模型并发较低（部分为 1 并发），需要手机号注册 | 6 | - | [官网](https://bigmodel.cn/usercenter/apikeys) · [邀请链接†](https://www.bigmodel.cn/invite?icode=bkHx%2Fep6dDks7UF3yJZB4LC%2Fk7jQAKmT1mpEiZXXnFw%3D) |
 
 ### † 关于邀请链接
@@ -149,9 +149,9 @@ _当前没有可路由的免费模型。_
 - `Qwen/Qwen3.5-35B-A3B`
 - `Qwen/Qwen3.5-397B-A17B`
 - `Qwen/Qwen3.8-27B`
+- `Qwen/Qwen3.8-Flash-Next`
 - `Shanghai_AI_Laboratory/Intern-S1`
 - `Shanghai_AI_Laboratory/Intern-S1-mini`
-- `Shanghai_AI_Laboratory/Intern-S2-Preview`
 
 ### 月之暗面 Kimi (`moonshot`)
 
@@ -172,11 +172,6 @@ _当前没有可路由的免费模型。_
 - `ibm/granite-3.0-8b-instruct`
 - `ibm/granite-34b-code-instruct`
 - `ibm/granite-8b-code-instruct`
-- `meta/llama-3.1-70b-instruct`
-- `meta/llama-3.1-8b-instruct`
-- `meta/llama-3.2-1b-instruct`
-- `meta/llama-3.2-3b-instruct`
-- `meta/llama-3.3-70b-instruct`
 - `microsoft/phi-3.5-moe-instruct`
 - `mistralai/codestral-22b-instruct-v0.1`
 - `mistralai/mistral-7b-instruct-v0.3`
@@ -186,6 +181,8 @@ _当前没有可路由的免费模型。_
 - `nvidia/llama-3.1-nemotron-70b-instruct`
 - `nvidia/llama3-chatqa-1.5-70b`
 - `nvidia/mistral-nemo-minitron-8b-8k-instruct`
+- `nvidia/nemotron-4-340b-instruct`
+- `zyphra/zamba2-7b-instruct`
 
 ### OpenRouter (`openrouter`)
 
@@ -193,6 +190,7 @@ _当前没有可路由的免费模型。_
 - `dots-studio/dots-3-note-preview:free`
 - `google/gemma-4-26b-a4b-it:free`
 - `google/gemma-4-31b-it:free`
+- `inclusionai/ling-3.0-flash-fin:free`
 - `liquid/lfm-2.5-2.6b:free`
 - `minimax/minimax-m2.7:free`
 - `minimax/minimax-m3:free`
@@ -203,7 +201,6 @@ _当前没有可路由的免费模型。_
 - `openrouter/free`
 - `poolside/laguna-s-2.1:free`
 - `poolside/laguna-xs-2.1:free`
-- `stealth/ox-alpha`
 - `thinkingmachines/inkling-small:free`
 - `thinkingmachines/inkling:free`
 - `z-ai/glm-5.2:free`
@@ -242,10 +239,8 @@ _当前没有可路由的免费模型。_
 
 ### ZenMux (`zenmux`)
 
-- `deepseek/deepseek-v4-flash-vision-exp-free`
 - `dots-studio/dots3-note-prev`
 - `inclusionai/ling-3.0-tiny`
-- `sapiens-ai/agnes-2.0-flash`
 - `sapiens-ai/agnes-2.5-flash`
 - `z-ai/glm-4.6v-flash-free`
 - `z-ai/glm-4.7-flash-free`
